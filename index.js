@@ -13,11 +13,20 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('assets'));
 
+// using express ejs layouts
+const expressLayouts = require('express-ejs-layouts');
+app.use(expressLayouts);
+
+// extracting styles and scripts
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
+
 // route handling
 app.use('/', require('./routes/index'));
 
 // setup view engine
 const path = require('path');
+const expressEjsLayouts = require('express-ejs-layouts');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 

@@ -5,8 +5,8 @@ const app = express();
 // declare port number
 const port = 8000;
 
-// database
-// const db = require('');
+// connecting to database
+const db = require('./config/mongoose');
 
 // middlewares
 const bodyParser = require('body-parser');

@@ -10,8 +10,11 @@ const db = require('./config/mongoose');
 
 // middlewares
 const bodyParser = require('body-parser');
+const cookieParserr = require('cookie-parser');
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParserr());
 app.use(express.static('assets'));
+
 
 // using express ejs layouts
 const expressLayouts = require('express-ejs-layouts');
@@ -27,6 +30,7 @@ app.use('/', require('./routes/index'));
 // setup view engine
 const path = require('path');
 const expressEjsLayouts = require('express-ejs-layouts');
+const cookieParser = require('cookie-parser');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 

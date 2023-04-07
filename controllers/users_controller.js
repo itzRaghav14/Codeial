@@ -114,3 +114,17 @@ module.exports.createSession = function(req, res){
     });
 
 }
+
+module.exports.endSession = function(req, res){
+
+    console.log(req.url);
+    console.log(req.cookies);
+
+    // remove the user id from cookies
+    req.cookies.user_id = '';
+    res.cookie('user_id', '');
+
+    // redirect to sign-in page
+    return res.redirect('sign-in');
+
+}

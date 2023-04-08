@@ -7,7 +7,7 @@ passport.use(new LocalStrategy({
         usernameField: 'username'
     },
     function(username, password, done){
-        User.findOne({username : username}, function(err, user){
+        User.findOne({username : username}, (err, user) => {
             if(err){
                 console.log(`Error in finding user : ${err}`);
                 return done(err);
@@ -16,7 +16,7 @@ passport.use(new LocalStrategy({
                 console.log('Invalid Password');
                 return done(null, false);
             }
-            return done(null, true);
+            return done(null, user);
         });
     }
 ));
@@ -36,5 +36,23 @@ passport.deserializeUser(function(id, done){
         return done(null, user);
     });
 });
+
+// check if the user is signed in
+passport.checkAuthentication = function(req, res, next){
+    // if the user is signed in then pass on the request to next function (i.e. controller's action)
+    if(req.isAuthenticated()){
+        return next();
+    }
+    // if the user is not signed in
+    return res.redirect('/users/sign-in');
+}
+
+passport.setAuthenticatedUser = function(req, res, next){
+    if(req.isAuthenticated()){
+        // req.user contains the signed-in user in the cookies and we are just sending this to the locals for the views
+        res.locals.user = req.user;
+    }
+    next();
+}
 
 module.exports = passport;

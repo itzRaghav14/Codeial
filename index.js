@@ -8,6 +8,14 @@ const port = 8000;
 // connecting to database
 const db = require('./config/mongoose');
 
+// importing passport and express-session 
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('./config/passport-local-strategy');
+
+// mongo store
+const MongoStore = require('connect-mongo')(session);
+
 // middlewares
 const bodyParser = require('body-parser');
 const cookieParserr = require('cookie-parser');
@@ -24,15 +32,39 @@ app.use(expressLayouts);
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 
-// route handling
-app.use('/', require('./routes/index'));
-
 // setup view engine
 const path = require('path');
-const expressEjsLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// (it should come after views only)
+app.use(session({
+    name: 'Codeial',
+    // change secret before deploying it in production mode
+    secret: 'blahsomething',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: (1000 * 60 * 100)
+    },
+    store: new MongoStore(
+        {
+            mongooseConnection: db,
+            autoRemove: 'disabled'
+        },
+        function(err){
+            console.log(err || 'connect-mongodb setup ok');
+        }
+    )
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.setAuthenticatedUser);
+
+// route handling
+app.use('/', require('./routes/index'));
 
 // app listening
 app.listen(port, (err) => {

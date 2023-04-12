@@ -10,6 +10,7 @@ router.get('/', homeController.home);
 
 // setting up router for other files
 router.use('/users', require('./users'));
+router.use('/posts', require('./posts'));
 
 // exporting router
 module.exports = router;

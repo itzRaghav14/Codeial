@@ -1,6 +1,24 @@
 <link rel="stylesheet" href="/css/home.css">
 
-<a href="/users/profile" class="text-3xl">Users</a>
+<main class="h-screen p-5">
+
+    <h1 class="text-5xl font-bold mb-4">Codeial / Homepage</h1>
+    <a href="/users/profile" class="text-3xl">Profile</a>
+
+    <% if(locals.user) { %>
+        <form action="/posts/create" class="mt-12" method="post">
+            <h1 class="text-4xl mb-4">Posts</h1>
+            <form action="/posts/create" method="POST">
+                <div>
+                    <textarea name="content" id="add-post-content" cols="30" rows="3" placeholder="Type Here..." class="border-2"></textarea>
+                </div>
+                <button type="submit" class="mt-2 w-fit px-2 py-1 bg-blue-500 text-white rounded-lg">Post</button>
+            </form>
+        </form>
+    <% } %>
+
+</main>
+
 
 
 <script src="/js/home.js" type="text/javascript"></script>

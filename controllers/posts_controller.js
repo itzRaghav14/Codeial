@@ -10,6 +10,6 @@ module.exports.create = function(req, res){
     }, function(err, user){
         if(err){console.log(`Error in creating post : ${err}`); return res.redirect('back');}
         console.log(`Post has been added : ${user}`);
-        return res.redirect('/users/profile');
+        return res.redirect('/');
     });
 }

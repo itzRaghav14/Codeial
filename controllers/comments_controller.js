@@ -28,6 +28,33 @@ module.exports.create = function(req, res){
             });
         }
     });
+}
 
+module.exports.destroy = function(req, res){
+    console.log(req.url);
+    console.log(req.user);
+    Comment.findById(req.params.id, function(err, comment){
+        if(err){
+            console.log(`Unable to fetch comment to destory : ${err}`);
+            return res.redirect('back');
+        }
+        console.log(comment.user);
+        console.log(req.user.id);
+        if(comment.user == req.user.id){
+            
+            let postId = comment.post;
 
+            comment.remove();
+
+            Post.findByIdAndUpdate(postId, {
+                $pull : {
+                    comments : req.params.id
+                }
+            }, function(err, post){
+                return res.redirect('back');
+            });
+        } else{
+            return res.redirect('back');
+        }
+    });
 }

@@ -4,9 +4,23 @@ module.exports.profile = function(req, res){
 
     console.log(req.url);
 
-    return res.render('users/profile', {
-        title : 'Codeial | Users'
+    User.findById(req.params.id, function(err, user){
+        return res.render('users/profile', {
+            title : 'User Profile',
+            profile_user : user
+        });
     });
+}
+
+module.exports.update = function(req, res){
+    console.log(req.url);
+    if(req.user.id == req.params.id){
+        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+            return res.redirect('back');
+        })
+    } else{
+        res.status(401).send('Unauthorized');
+    }
 }
 
 module.exports.signUp = function(req, res){
@@ -75,7 +89,7 @@ module.exports.createSession = function(req, res){
 
     console.log(req.url);
 
-    return res.redirect('profile');
+    return res.redirect('/');
 }
 
 module.exports.destroySession = function(req, res){

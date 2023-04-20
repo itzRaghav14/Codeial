@@ -1,29 +1,45 @@
 <link rel="stylesheet" href="/css/home.css">
 
-<main class="h-screen p-5">
+<main class="h-screen p-5 grid grid-cols-12">
 
-    <h1 class="text-5xl font-bold mb-4">Codeial / Homepage</h1>
-    <a href="/users/profile" class="text-3xl">Profile</a>
+	<!-- main section -->
+	<section class="col-span-9">
+		
+		<h1 class="text-5xl font-bold mb-4">Codeial / Homepage</h1>
+		<a href="/users/profile" class="text-3xl">Profile</a>
+	
+		<% if(locals.user) { %>
+			<form action="/posts/create" class="mt-12" method="post">
+				<h1 class="text-4xl mb-4">Posts</h1>
+				<form action="/posts/create" method="POST">
+					<div>
+						<textarea name="content" id="add-post-content" cols="30" rows="3" placeholder="Type Here..." class="border-2" required></textarea>
+					</div>
+					<button type="submit" class="mt-2 w-fit px-2 py-1 bg-blue-500 text-white rounded-lg">Post</button>
+				</form>
+			</form>
+		<% } %>
+	
+		<div id="posts-list-container">
+			<ul>
+				<% for(post of locals.posts) { %>
+					<%- include('_post') -%>
+				<% } %>
+			</ul>
+		</div>
 
-    <% if(locals.user) { %>
-        <form action="/posts/create" class="mt-12" method="post">
-            <h1 class="text-4xl mb-4">Posts</h1>
-            <form action="/posts/create" method="POST">
-                <div>
-                    <textarea name="content" id="add-post-content" cols="30" rows="3" placeholder="Type Here..." class="border-2" required></textarea>
-                </div>
-                <button type="submit" class="mt-2 w-fit px-2 py-1 bg-blue-500 text-white rounded-lg">Post</button>
-            </form>
-        </form>
-    <% } %>
+	</section>
 
-    <div id="posts-list-container">
-        <ul>
-            <% for(post of locals.posts) { %>
-                <%- include('_post') -%>
-            <% } %>
-        </ul>
-    </div>
+	<section id="user-friends" class="col-span-3">
+		<h4 class="text-3xl font-semibold">Friends</h4>
+		<ul>
+			<% for(friend of all_users) { %>
+				<li>
+					<a href="users/profile/<%= friend.id %>"> <%= friend.name %> </a>
+				</li>
+			<%} %>
+		</ul>
+	</section>
 
 </main>
 

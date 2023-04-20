@@ -3,10 +3,20 @@
     
     <h1 class="text-5xl font-bold">Codeial / Profile</h1>
     
-    <ul class="text-2xl">
-        <li> Name - <span class="font-medium"> <%= user.name %> </span> </li>
-        <li> Username - <span class="font-medium"> <%= user.username %> </span> </li>
-        <li> Email - <span class="font-medium"> <%= user.email %> </span> </li>
-    </ul>
+    
+    <% if(user.id == profile_user.id) { %>
+        <form action="/users/update/<%= profile_user.id %>" method="post">
+            <input type="text" name="name" placeholder="Your Name" value="<%= profile_user.name %>" required> <br>
+            <input type="text" name="username" placeholder="Your User" value="<%= profile_user.username %>" required> <br>
+            <input type="email" name="email" placeholder="Your Email" value="<%= profile_user.email %>" required> <br>
+            <button type="submit"> Save </button>
+        </form>
+    <% } else { %>
+        <ul class="text-2xl">
+            <li> Name - <span class="font-medium"> <%= profile_user.name %> </span> </li>
+            <li> Username - <span class="font-medium"> <%= profile_user.username %> </span> </li>
+            <li> Email - <span class="font-medium"> <%= profile_user.email %> </span> </li>
+        </ul>
+    <% } %>
     
 </main>

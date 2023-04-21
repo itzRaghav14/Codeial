@@ -14,12 +14,14 @@ module.exports.create = async function(req, res){
         
         // print the created post
         console.log(`Post has been created : ${new_post}`);
+        req.flash('success', 'Post published');
 
         // redirect back to the home page
         return res.redirect('/');
 
     } catch(err){
         console.log(`Error in creating a new post : ${err}`);
+        req.flash('error', 'The post could not be published');
         return res.redirect('/');
     }
 }
@@ -39,6 +41,13 @@ module.exports.destroy = async function(req, res){
     
             // delete the comments
             await Comment.deleteMany({post : req.params.id});
+
+            // print that the post has been deleted
+            console.log(`Post has been deleted`);
+            req.flash('success', 'Post has been deleted');
+            
+        } else{
+            req.flash('You are not authorized to delete this post');
         }
 
         // redirect back to the last page
@@ -46,6 +55,7 @@ module.exports.destroy = async function(req, res){
 
     } catch(err){
         console.log(`Error in deleting a post : ${err}`);
+        req.flash('error', 'The post could not be deleted');
         return res.redirect('back');
     }
 }

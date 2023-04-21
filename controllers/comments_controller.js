@@ -21,6 +21,7 @@ module.exports.create = async function(req, res){
 
             // print the new comment
             console.log(`New comment has been added : ${new_comment}`);
+            req.flash('success', 'Comment added');
 
             // push the comment into post and save
             post.comments.push(new_comment);
@@ -32,6 +33,7 @@ module.exports.create = async function(req, res){
 
     } catch(err){
         console.log(`Error in creating a new comment : ${err}`);
+        req.flash('error', 'Failed to add comment');
         return res.redirect('back');
     }
 }
@@ -48,6 +50,7 @@ module.exports.destroy = async function(req, res){
 
         // if comment is not found then return back
         if(!comment_to_be_deleted){
+            req.flash('error', 'Comment not found');
             return res.redirect('back');
         }
 
@@ -62,6 +65,13 @@ module.exports.destroy = async function(req, res){
     
             // update the post comments
             await Post.findByIdAndUpdate(post.id, {$pull : {comments : req.params.id}});
+
+            // print that comment has been deleted
+            console.log('Comment has been deleted');
+            req.flash('success', 'Comment deleted');
+
+        } else{
+            req.flash('error', 'You cannot delete this comment');
         }
 
         // redirect back to the last page
@@ -70,32 +80,8 @@ module.exports.destroy = async function(req, res){
     }
     catch(err){
         console.log(`Error in deleting the comment : ${err}`);
+        req.flash('error', 'The comment could not be deleted');
         return res.redirect('back');
     }
     
-
-    // Comment.findById(req.params.id, function(err, comment){
-    //     if(err){
-    //         console.log(`Unable to fetch comment to destory : ${err}`);
-    //         return res.redirect('back');
-    //     }
-    //     console.log(comment.user);
-    //     console.log(req.user.id);
-    //     if(comment.user == req.user.id){
-            
-    //         let postId = comment.post;
-
-    //         comment.remove();
-
-    //         Post.findByIdAndUpdate(postId, {
-    //             $pull : {
-    //                 comments : req.params.id
-    //             }
-    //         }, function(err, post){
-    //             return res.redirect('back');
-    //         });
-    //     } else{
-    //         return res.redirect('back');
-    //     }
-    // });
 }

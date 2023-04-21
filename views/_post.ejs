@@ -1,8 +1,8 @@
-<div class="post-container mt-3">
+<div id="post-<%= post._id %>" class="post-container mt-3">
     <li>
         <%= post.user.name %> - <%= post.content %>
         <% if(locals.user && locals.user.id == post.user.id) { %> 
-            - <a href="posts/destroy/<%= post.id %>">delete</a>
+            - <a href="posts/destroy/<%= post.id %>" class="post-delete-button">delete</a>
         <% } %>
     </li>
     <div class="post-comments">

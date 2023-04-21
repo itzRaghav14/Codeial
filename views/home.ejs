@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/css/home.css">
 
-<main class="h-screen p-5 grid grid-cols-12">
+<main class="min-h-screen p-5 grid grid-cols-12">
 
 	<!-- main section -->
 	<section class="col-span-9">
@@ -9,7 +9,7 @@
 		<a href="/users/profile" class="text-3xl">Profile</a>
 	
 		<% if(locals.user) { %>
-			<form action="/posts/create" class="mt-12" method="post">
+			<form action="/posts/create" id="new-post-form" class="mt-12" method="post">
 				<h1 class="text-4xl mb-4">Posts</h1>
 				<form action="/posts/create" method="POST">
 					<div>
@@ -44,5 +44,4 @@
 </main>
 
 
-
-<script src="/js/home.js" type="text/javascript"></script>
+<script src="/js/home_posts.js" type="text/javascript"></script>

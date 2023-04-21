@@ -16,6 +16,16 @@ module.exports.create = async function(req, res){
         console.log(`Post has been created : ${new_post}`);
         req.flash('success', 'Post published');
 
+        // check if the request was through AJAX
+        if(req.xhr){
+            return res.status(200).json({
+                data : {
+                    post : new_post
+                },
+                message : "Post Created!"
+            });
+        }
+
         // redirect back to the home page
         return res.redirect('/');
 
@@ -45,6 +55,15 @@ module.exports.destroy = async function(req, res){
             // print that the post has been deleted
             console.log(`Post has been deleted`);
             req.flash('success', 'Post has been deleted');
+
+            if(req.xhr){
+                return res.status(200).json({
+                    data : {
+                        post_id : req.params.id
+                    },
+                    message : 'Post deleted'
+                });
+            }
             
         } else{
             req.flash('You are not authorized to delete this post');

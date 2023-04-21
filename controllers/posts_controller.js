@@ -1,39 +1,51 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 
-module.exports.create = function(req, res){
+module.exports.create = async function(req, res){
+    // print the request url
     console.log(req.url);
-    console.log(req.cookies.codeial);
-    console.log(req.cookies.Codeial);
-    Post.create({
-        content: req.body.content,
-        user: req.user._id
-    }, function(err, user){
-        if(err){console.log(`Error in creating post : ${err}`); return res.redirect('back');}
-        console.log(`Post has been added : ${user}`);
+
+    try{
+        // create a post
+        let new_post = await Post.create({
+            content : req.body.content,
+            user : req.user._id
+        });
+        
+        // print the created post
+        console.log(`Post has been created : ${new_post}`);
+
+        // redirect back to the home page
         return res.redirect('/');
-    });
+
+    } catch(err){
+        console.log(`Error in creating a new post : ${err}`);
+        return res.redirect('/');
+    }
 }
 
-module.exports.destroy = function(req, res){
+module.exports.destroy = async function(req, res){
+    // printing the request url
     console.log(req.url);
-    // find the post
-    Post.findById(req.params.id, function(err, post){
-        if(err){
-            console.log(`Error in finding post to delete comment : ${err}`);
-            return res.redirect('back');
-        }
-        // if the auther of post is trying to delete the post
-        if(post.user == req.user.id){
+
+    try{
+        // find the post to be deleted
+        let post_to_be_deleted = await Post.findById(req.params.id);
+
+        // if the author is trying to delete the post
+        if(post_to_be_deleted.user == req.user.id){
             // delete the post
-            post.remove();
-            // delete all comments associated with this post
-            Comment.deleteMany({post : req.params.id}, function(err){
-                return res.redirect('back');
-            });
-        } else{
-            // if someone else is trying to delete the post then just return back
-            return res.redirect('back');
+            post_to_be_deleted.remove();
+    
+            // delete the comments
+            await Comment.deleteMany({post : req.params.id});
         }
-    });
+
+        // redirect back to the last page
+        return res.redirect('back');
+
+    } catch(err){
+        console.log(`Error in deleting a post : ${err}`);
+        return res.redirect('back');
+    }
 }

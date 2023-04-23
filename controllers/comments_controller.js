@@ -1,3 +1,4 @@
+const { comment } = require('postcss');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 
@@ -19,13 +20,33 @@ module.exports.create = async function(req, res){
                 user : req.user._id
             });
 
+            // populating the new comment
+            await new_comment.populate({
+                path : 'user',
+                select : {
+                    name : 1,
+                    username : 1
+                }
+            });
+
             // print the new comment
             console.log(`New comment has been added : ${new_comment}`);
             req.flash('success', 'Comment added');
 
+            
             // push the comment into post and save
             post.comments.push(new_comment);
             post.save();
+            
+            // if request is through ajax
+            if(req.xhr){
+                return res.status(200).json({
+                    data : {
+                        comment : new_comment
+                    },
+                    message : 'Comment Added'
+                });
+            }
         }
 
         // redirect to home page
@@ -69,6 +90,15 @@ module.exports.destroy = async function(req, res){
             // print that comment has been deleted
             console.log('Comment has been deleted');
             req.flash('success', 'Comment deleted');
+
+            if(req.xhr){
+                return res.status(200).json({
+                    data : {
+                        commentId : req.params.id
+                    },
+                    message : 'Comment Deleted'
+                });
+            }
 
         } else{
             req.flash('error', 'You cannot delete this comment');

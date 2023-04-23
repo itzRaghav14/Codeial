@@ -14,6 +14,7 @@ function home_posts(){
                     let newPost = newPostDom(data.data.post);
                     $('#posts-list-container>ul').prepend(newPost);
                     deletePost($(' .post-delete-button', newPost));
+                    setUpCommentSection(newPost);
                 },
                 error: function (err) {
                     console.log(err.responseText);
@@ -36,8 +37,8 @@ function home_posts(){
                         <input type="hidden" name="post" value="${post._id}" required>
                         <button type="submit">Add comment</button>
                     </form>
-                    <div class="post-comments-list">
-                        <ul id="post-comments-${post._id}">
+                    <div class="post-comments-container">
+                        <ul id="post-comments-${post._id}" class="post-comments-list">
 
                         </ul>
                     </div>
@@ -70,6 +71,7 @@ function home_posts(){
         for(let post of allPosts){
             let deleteLink = $(' .post-delete-button', post);
             deletePost(deleteLink);
+            setUpCommentSection(post);
         }
     }
 
@@ -79,4 +81,3 @@ function home_posts(){
 };
 
 home_posts();
-

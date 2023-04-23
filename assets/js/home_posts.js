@@ -1,6 +1,5 @@
-{
-    console.log('script is running');
-
+function home_posts(){
+    
     // method to submit the form data for new post using AJAX
     let createPost = function () {
         let newPostForm = $('#new-post-form');
@@ -65,7 +64,19 @@
         });
     };
 
-
+    function deletePostAll(){
+        const postsListContainer = $('#posts-list-container');
+        const allPosts = $(' .post-container', postsListContainer);
+        for(let post of allPosts){
+            let deleteLink = $(' .post-delete-button', post);
+            deletePost(deleteLink);
+        }
+    }
 
     createPost();
-}
+    deletePostAll();
+
+};
+
+home_posts();
+

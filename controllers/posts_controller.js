@@ -11,6 +11,15 @@ module.exports.create = async function(req, res){
             content : req.body.content,
             user : req.user._id
         });
+
+        // populating the user
+        await new_post.populate({
+            path: 'user',
+            select : {
+                name : 1,
+                username : 1
+            }
+        });
         
         // print the created post
         console.log(`Post has been created : ${new_post}`);

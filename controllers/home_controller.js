@@ -14,10 +14,6 @@ module.exports.home = async function(req, res){
                 path : 'user'
             }
         });
-
-        // posts.forEach(post => {
-        //     post.comments.sort('-createdAt');
-        // });
     
         let users = await User.find({});
     

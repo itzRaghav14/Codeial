@@ -5,15 +5,21 @@ const User = require('../models/user');
 module.exports.home = async function(req, res){
     console.log(req.url);
     try{
-        let posts = await Post.find({})
-        .sort('-createdAt')
-        .populate('user')
-        .populate({
-            path : 'comments',
-            populate : {
-                path : 'user'
-            }
-        });
+        let posts = await Post
+            .find({})
+            .sort('-createdAt')
+            .populate('user')
+            .populate({
+                path : 'comments',
+                options : {
+                    sort : {
+                        'createdAt' : -1
+                    }
+                },
+                populate : {
+                    path : 'user'
+                }
+            });
     
         let users = await User.find({});
     
@@ -25,7 +31,5 @@ module.exports.home = async function(req, res){
     } catch(err){
         console.log(`Error in displaying home page : ${err}`);
         return res.redirect('/');
-    }
-
-    
+    }   
 }

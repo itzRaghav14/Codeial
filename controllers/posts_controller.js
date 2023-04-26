@@ -3,7 +3,7 @@ const Comment = require('../models/comment');
 
 module.exports.create = async function(req, res){
     // print the request url
-    console.log(req.url);
+    console.log('/posts' + req.url);
 
     try{
         // create a post
@@ -23,7 +23,7 @@ module.exports.create = async function(req, res){
         
         // print the created post
         console.log(`Post has been created : ${new_post}`);
-        req.flash('success', 'Post published');
+        // req.flash('success', 'Post published');
 
         // check if the request was through AJAX
         if(req.xhr){
@@ -40,14 +40,14 @@ module.exports.create = async function(req, res){
 
     } catch(err){
         console.log(`Error in creating a new post : ${err}`);
-        req.flash('error', 'The post could not be published');
+        // req.flash('error', 'The post could not be published');
         return res.redirect('/');
     }
 }
 
 module.exports.destroy = async function(req, res){
     // printing the request url
-    console.log(req.url);
+    console.log('/posts' + req.url);
 
     try{
         // find the post to be deleted
@@ -63,7 +63,7 @@ module.exports.destroy = async function(req, res){
 
             // print that the post has been deleted
             console.log(`Post has been deleted`);
-            req.flash('success', 'Post has been deleted');
+            // req.flash('success', 'Post has been deleted');
 
             if(req.xhr){
                 return res.status(200).json({
@@ -83,7 +83,7 @@ module.exports.destroy = async function(req, res){
 
     } catch(err){
         console.log(`Error in deleting a post : ${err}`);
-        req.flash('error', 'The post could not be deleted');
+        // req.flash('error', 'The post could not be deleted');
         return res.redirect('back');
     }
 }

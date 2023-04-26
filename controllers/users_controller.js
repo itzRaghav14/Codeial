@@ -2,7 +2,7 @@ const User = require('../models/user');
 
 module.exports.profile = async function(req, res){
     // print the request url
-    console.log(req.url);
+    console.log('/users' + req.url);
 
     try{
         // fetch the user
@@ -22,7 +22,7 @@ module.exports.profile = async function(req, res){
 
 module.exports.update = async function(req, res){
     // print the request url
-    console.log(req.url);
+    console.log('/users' + req.url);
 
     try{
         // check if an unauthorized user is trying to update the profile
@@ -47,7 +47,7 @@ module.exports.update = async function(req, res){
 module.exports.signUp = function(req, res){
 
     // print request url
-    console.log(req.url);
+    console.log('/users' + req.url);
 
     // check if the user is already authenticated or not
     if(req.isAuthenticated()){
@@ -63,7 +63,7 @@ module.exports.signUp = function(req, res){
 module.exports.signIn = function(req, res){
 
     // print the request url
-    console.log(req.url);
+    console.log('/users' + req.url);
 
     // check if the user is already signed in
     if(req.isAuthenticated()){
@@ -79,7 +79,7 @@ module.exports.signIn = function(req, res){
 module.exports.create = async function(req, res){
 
     // printing the url
-    console.log(req.url);
+    console.log('/users' + req.url);
     
     try{
         // checking if the sign up details are valid or not
@@ -128,7 +128,7 @@ module.exports.create = async function(req, res){
 module.exports.createSession = function(req, res){
 
     // print request url
-    console.log(req.url);
+    console.log('/users' + req.url);
 
     // print that session has been created
     console.log('A new session has been created');
@@ -141,7 +141,7 @@ module.exports.createSession = function(req, res){
 module.exports.destroySession = async function(req, res){
 
     // print request url
-    console.log(req.url);
+    console.log('/users' + req.url);
 
     try{
         // logout user (it will destroy the session)
@@ -154,14 +154,10 @@ module.exports.destroySession = async function(req, res){
             // redirecting user to home page
             res.redirect('/');
         });
-
-
     }
     catch(err){
         console.log(`Error in logging out the user : ${err}`);
         req.flash('error', 'Could not sign out, please try again');
         return res.redirect('back');
     }
-
-
 }

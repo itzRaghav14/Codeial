@@ -1,45 +1,51 @@
 <link rel="stylesheet" href="/css/home.css">
 
-<main class="min-h-screen p-5 grid grid-cols-12">
+<main class="min-h-screen bg-[var(--dominant)]">
 
-	<!-- main section -->
-	<section class="col-span-9">
+	<section class="h-full w-4/5 mx-auto p-5 grid grid-cols-12 gap-5">
+
+		<!-- left section -->
+		<section class="col-span-3">
+	
+		</section>
+	
+		<!-- main section -->
+		<section class="col-span-6">
 		
-		<h1 class="text-5xl font-bold mb-4">Codeial / Homepage</h1>
-		<a href="/users/profile" class="text-3xl">Profile</a>
+			<% if(locals.user) { %>
+				<div class="py-2 px-3 bg-[var(--complementary)] rounded-3xl">
+					<form action="/posts/create" id="new-post-form" class="grid grid-cols-12 w-full" method="post">
+						<input type="text" name="content" id="add-post-content" placeholder="What's on your mind, <%= user.name %>?" class="bg-inherit col-span-10 focus:outline-0 text-white" required>
+						<div class="col-span-2 flex justify-center items-center">
+							<button type="submit" class="w-full px-2 py-1 bg-[var(--accent)] text-white rounded-2xl">Post</button>
+						</div>
+					</form>
+				</div>
+			<% } %>
+		
+			<div id="posts-list-container" class="mt-5">
+				<ul id="posts-list" class="space-y-4">
+					<% for(post of locals.posts) { %>
+						<%- include('_post') -%>
+					<% } %>
+				</ul>
+			</div>
 	
-		<% if(locals.user) { %>
-			<form action="/posts/create" id="new-post-form" class="mt-12" method="post">
-				<h1 class="text-4xl mb-4">Posts</h1>
-				<form action="/posts/create" method="POST">
-					<div>
-						<textarea name="content" id="add-post-content" cols="30" rows="3" placeholder="Type Here..." class="border-2" required></textarea>
-					</div>
-					<button type="submit" class="mt-2 w-fit px-2 py-1 bg-blue-500 text-white rounded-lg">Post</button>
-				</form>
-			</form>
-		<% } %>
+		</section>
 	
-		<div id="posts-list-container">
+		<section id="user-friends" class="col-span-3 text-white">
+			<h4 class="text-3xl font-semibold">Friends</h4>
 			<ul>
-				<% for(post of locals.posts) { %>
-					<%- include('_post') -%>
-				<% } %>
+				<% for(friend of all_users) { %>
+					<li>
+						<a href="users/profile/<%= friend.id %>"> <%= friend.name %> </a>
+					</li>
+				<%} %>
 			</ul>
-		</div>
+		</section>
 
 	</section>
 
-	<section id="user-friends" class="col-span-3">
-		<h4 class="text-3xl font-semibold">Friends</h4>
-		<ul>
-			<% for(friend of all_users) { %>
-				<li>
-					<a href="users/profile/<%= friend.id %>"> <%= friend.name %> </a>
-				</li>
-			<%} %>
-		</ul>
-	</section>
 
 </main>
 

@@ -5,7 +5,7 @@ const Post = require('../models/post');
 module.exports.create = async function(req, res){
 
     // printing the request url
-    console.log(req.url);
+    console.log('/comments' + req.url);
 
     try{
         // find the post
@@ -31,8 +31,7 @@ module.exports.create = async function(req, res){
 
             // print the new comment
             console.log(`New comment has been added : ${new_comment}`);
-            req.flash('success', 'Comment added');
-
+            // req.flash('success', 'Comment added');
             
             // push the comment into post and save
             post.comments.push(new_comment);
@@ -54,7 +53,7 @@ module.exports.create = async function(req, res){
 
     } catch(err){
         console.log(`Error in creating a new comment : ${err}`);
-        req.flash('error', 'Failed to add comment');
+        // req.flash('error', 'Failed to add comment');
         return res.redirect('back');
     }
 }
@@ -62,7 +61,7 @@ module.exports.create = async function(req, res){
 module.exports.destroy = async function(req, res){
 
     // print the request url
-    console.log(req.url);
+    console.log('/comments' + req.url);
 
     try{
 
@@ -89,7 +88,7 @@ module.exports.destroy = async function(req, res){
 
             // print that comment has been deleted
             console.log('Comment has been deleted');
-            req.flash('success', 'Comment deleted');
+            // req.flash('success', 'Comment deleted');
 
             if(req.xhr){
                 return res.status(200).json({
@@ -110,7 +109,7 @@ module.exports.destroy = async function(req, res){
     }
     catch(err){
         console.log(`Error in deleting the comment : ${err}`);
-        req.flash('error', 'The comment could not be deleted');
+        // req.flash('error', 'The comment could not be deleted');
         return res.redirect('back');
     }
     

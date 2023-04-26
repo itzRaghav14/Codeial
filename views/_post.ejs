@@ -1,24 +1,46 @@
-<div id="post-<%= post._id %>" class="post-container mt-3">
-    <li>
-        <%= post.user.name %> - <%= post.content %>
-        <% if(locals.user && locals.user.id == post.user.id) { %> 
-            - <a href="posts/destroy/<%= post.id %>" class="post-delete-button">delete</a>
-        <% } %>
-    </li>
-    <div class="post-comments">
-        <% if(locals.user) { %> 
-            <form action="/comments/create" class="add-comment-form" method="post">
-                <input type="text" name="content" placeholder="Write a comment..." required>
-                <input type="hidden" name="post" value="<%= post._id %>" required>
-                <button type="submit">Add comment</button>
-            </form>
-        <% } %>
-        <div class="post-comments-container">
-            <ul id="post-comments-<%= post._id %>" class="post-comments-list">
-                <% for(comment of post.comments) { %> 
-                    <%- include('_comment') -%>
-                <% } %>
-            </ul>
-        </div>
+<!-- Post -->
+<li id="post-<%= post._id %>" class="post-container p-2 bg-[var(--complementary)] rounded-xl">
+
+    <!-- Post delete button -->
+    <% if(locals.user && locals.user.id == post.user.id) { %> 
+        <a href="/posts/destroy/<%= post._id %>" class="post-delete-button text-white text-lg float-right mr-2"><i class="fa-solid fa-xmark"></i></a>
+    <% } %>
+
+    <!-- Post heading -->
+    <h4 id="post-heading-<%= post._id %>" class="text-lg text-white font-medium"> <%= post.user.name %> </h4>
+
+    <!-- Post Information -->
+    <div id="post-info-<%= post._id %>" class="text-xs text-white">
+        <span> <%= post.createdAt.toLocaleDateString("hi-IN") %> </span> - 
+        <span> <%= post.createdAt.toLocaleTimeString("hi-IN") %> </span>
     </div>
-</div>
+
+    <!-- Post Content (will be designed later) -->
+    <div id="post-content-<%= post._id %>" class="text-white text-lg my-2">
+        <%= post.content %>
+    </div>
+
+    <!-- Comment Section -->
+    <div id="post-comment-section-<%= post._id %>">
+        <h4 class="text-white text-lg">Comments</h4>
+        <!-- New comemnt form -->
+        <% if(locals.user) { %>
+            <div class="py-2 px-3 bg-[var(--complementary)] rounded-3xl">
+                <form id="post-comment-form-<%= post._id %>" action="/comments/create" method="post" class="new-comment-form grid grid-cols-12">
+                    <input type="text" name="content" placeholder="Write a comment..." class="bg-[var(--complementary)] focus:outline-0 col-span-9 text-white" required>
+                    <input type="hidden" name="post" value="<%= post._id %>" required>
+                    <div class="col-span-3 flex items-center justify-center">
+                        <button type="submit" id="comment-add-button-<%= post._id %>" class="bg-[var(--accent)] text-white py-1 px-2 rounded-3xl w-full"> Comment </button>
+                    </div>
+                </form>
+            </div>    
+        <% } %>
+
+        <!-- Other comments -->
+        <ul id="post-comments-<%= post._id %>" class="post-comments-list space-y-2">
+            <% for(comment of post.comments) { %> 
+                <%- include('_comment') %>
+            <% } %>
+        </ul>
+    </div>
+</li>

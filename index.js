@@ -26,7 +26,7 @@ const cookieParserr = require('cookie-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParserr());
 app.use(express.static('assets'));
-
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 // using express ejs layouts
 const expressLayouts = require('express-ejs-layouts');
@@ -39,6 +39,7 @@ app.set('layout extractScripts', true);
 // setup view engine
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const exp = require('constants');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 

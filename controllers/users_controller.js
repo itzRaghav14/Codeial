@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const fs = require('fs');
+const path = require('path');
 
 module.exports.profile = async function(req, res){
     // print the request url
@@ -7,6 +9,9 @@ module.exports.profile = async function(req, res){
     try{
         // fetch the user
         let user = await User.findById(req.params.id);
+
+        // console the user
+        console.log(`The user profile is ${user}`);
 
         // render profile page
         return res.render('users/profile', {
@@ -31,11 +36,43 @@ module.exports.update = async function(req, res){
             return res.status(401).send('You are not authorized to update this user profile');
         }
         
+        // multer function
+        let user = await User.findById(req.params.id);
+        User.uploadedAvatar(req, res, function(err){
+            if(err){
+                console.log(`Error while updating profile : ${err}`);
+                return res.redirect('back');
+            }
+
+            // update user
+            user.name = req.body.name;
+            user.username = req.body.username;
+            user.email = req.body.email;
+
+            if(req.file){
+
+                // deleting the already existing file
+                if(user.avatar){
+                    const filePath = path.join(__dirname, '..', user.avatar);
+                    if(fs.existsSync(filePath)) fs.unlinkSync();
+                }
+
+                // this will save the file path of the uploaded file into avatar field into user
+                user.avatar = User.avatarPath + '/' + req.file.filename;
+            }
+
+            // save user changes
+            user.save();
+
+            // redirect to last page
+            return res.redirect('back');
+        });
+
         // update the user in the database
-        await User.findByIdAndUpdate(req.params.id, req.body);
+        // await User.findByIdAndUpdate(req.params.id, req.body);
 
         // redirect user to last page
-        return res.redirect('back');
+        // return res.redirect('back');
     }
     catch(err){
         console.log(`Error in updating user profile : ${err}`);

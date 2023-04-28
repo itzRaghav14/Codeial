@@ -1,14 +1,15 @@
 
 <main class="h-screen p-5 space-y-3">
     
-    <h1 class="text-5xl font-bold">Codeial / Profile</h1>
-    
+    <img src="<%= user.avatar %>" alt="<%= user.name %>" width="100px">
+    <h1 class="text-5xl font-bold"><%= profile_user.name %>'s Profile</h1>
     
     <% if(user.id == profile_user.id) { %>
-        <form action="/users/update/<%= profile_user.id %>" method="post">
+        <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post">
             <input type="text" name="name" placeholder="Your Name" value="<%= profile_user.name %>" required> <br>
             <input type="text" name="username" placeholder="Your User" value="<%= profile_user.username %>" required> <br>
             <input type="email" name="email" placeholder="Your Email" value="<%= profile_user.email %>" required> <br>
+            <input type="file" name="avatar" placeholder="Profile Picture"> <br>
             <button type="submit"> Save </button>
         </form>
     <% } else { %>

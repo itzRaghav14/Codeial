@@ -3,14 +3,15 @@
         <h1 class="font-bold text-4xl text-center pb-2">SIGN IN FORM</h1>
         <div class="flex flex-col gap-6 pt-6">
             <div class="grid grid-cols-2">
-                <label for="sign-up-form-username"> Username : </label>
-                <input type="text" name="username" id="sign-up-form-username" required class="rounded text-black py-1 px-2" placeholder="Your username">
+                <label for="sign-up-form-email"> Email : </label>
+                <input type="email" name="email" id="sign-up-form-email" required class="rounded text-black py-1 px-2" placeholder="Your Email">
             </div>
             <div class="grid grid-cols-2">
                 <label for="sign-up-form-password"> Password : </label>
                 <input type="password" name="password" id="sign-up-form-password" required class="rounded text-black py-1 px-2" placeholder="Password">
             </div>
             <button type="submit" class="border text-justify border-white w-fit py-2 px-3 mx-auto rounded-3xl hover:bg-white hover:text-fuchsia-700 "> SIGN IN </button>
+            <a href="/users/auth/google" class="border text-justify border-white w-fit py-2 px-3 mx-auto rounded-3xl hover:bg-white hover:text-fuchsia-700 ""> Continue using Google Account </a>
         </div>
     </div>
 </form>

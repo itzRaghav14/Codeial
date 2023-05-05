@@ -4,11 +4,11 @@ const User = require('../models/user');
 
 // authentication using passport
 passport.use(new LocalStrategy({
-        usernameField: 'username',
+        usernameField: 'email',
         passReqToCallback: true
     },
-    function(req, username, password, done){
-        User.findOne({username : username}, (err, user) => {
+    function(req, email, password, done){
+        User.findOne({email : email}, (err, user) => {
             if(err){
                 console.log(`Error in finding user : ${err}`);
                 req.flash('error', 'Some unexpected error');
@@ -26,7 +26,7 @@ passport.use(new LocalStrategy({
 
 // serializing the user to decide which key is to be kept in the cookie
 passport.serializeUser(function(user, done){
-    done(null, user.id);
+    return done(null, user.id);
 });
 
 // deserializing the user from the key in the cookies

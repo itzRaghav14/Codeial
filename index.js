@@ -13,6 +13,7 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const passportJWT = require('./config/passport-jwt-strategy');
+const passportGoogle = require('./config/passport-google-oauth2-strategy');
 
 // importing flash
 const flash = require('connect-flash');
@@ -23,9 +24,9 @@ const MongoStore = require('connect-mongo')(session);
 
 // middlewares
 const bodyParser = require('body-parser');
-const cookieParserr = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParserr());
+app.use(cookieParser());
 app.use(express.static('assets'));
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
@@ -39,7 +40,6 @@ app.set('layout extractScripts', true);
 
 // setup view engine
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const exp = require('constants');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

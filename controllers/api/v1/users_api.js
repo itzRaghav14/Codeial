@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports.createSession = async function(req, res){
     try{
-        let user = await User.findOne({ username : req.body.username });
+        let user = await User.findOne({ email : req.body.email });
         if(!user || user.password != req.body.password){
             return res.status(401).json({
                 message : 'Invalid username or password'

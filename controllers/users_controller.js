@@ -125,14 +125,14 @@ module.exports.create = async function(req, res){
             return res.redirect('back');
         }
 
-        // check if there is already a user with same username
-        let user_with_same_username = await User.findOne({username : req.body.username});
+        // // check if there is already a user with same username
+        // let user_with_same_username = await User.findOne({username : req.body.username});
         
-        // if the username is already taken then send user back to sign up page
-        if(user_with_same_username){
-            req.flash('error', 'Username already taken');
-            return res.redirect('/users/sign-up');
-        }
+        // // if the username is already taken then send user back to sign up page
+        // if(user_with_same_username){
+        //     req.flash('error', 'Username already taken');
+        //     return res.redirect('/users/sign-up');
+        // }
 
         // check if there is already a user with same email
         let user_with_same_email = await User.findOne({email : req.body.email});

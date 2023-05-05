@@ -2,6 +2,8 @@ const { comment } = require('postcss');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 const commentsMailer = require('../mailers/comments_mailer');
+const queue = require('../config/kue');
+const commentEmailWorker = require('../workers/comment_email_worker');
 
 module.exports.create = async function(req, res){
 
@@ -36,7 +38,11 @@ module.exports.create = async function(req, res){
             });
 
             // send mail to the author for the comment
-            commentsMailer.newComment(new_comment);
+            // commentsMailer.newComment(new_comment);
+            let job = queue.create('emails', new_comment).save(function(err){
+                if(err) {console.log('error in creating a queue (comments_controller) ', err); return;}
+                console.log('job enqueued : ', job.id);
+            });
 
             // print the new comment
             console.log(`New comment has been added : ${new_comment}`);

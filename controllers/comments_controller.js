@@ -1,6 +1,7 @@
 const { comment } = require('postcss');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const commentsMailer = require('../mailers/comments_mailer');
 
 module.exports.create = async function(req, res){
 
@@ -19,23 +20,27 @@ module.exports.create = async function(req, res){
                 post : req.body.post,
                 user : req.user._id
             });
+            
+            // push the comment into post and save
+            post.comments.push(new_comment);
+            post.save();
 
             // populating the new comment
             await new_comment.populate({
                 path : 'user',
                 select : {
                     name : 1,
-                    username : 1
+                    username : 1,
+                    email : 1
                 }
             });
+
+            // send mail to the author for the comment
+            commentsMailer.newComment(new_comment);
 
             // print the new comment
             console.log(`New comment has been added : ${new_comment}`);
             // req.flash('success', 'Comment added');
-            
-            // push the comment into post and save
-            post.comments.push(new_comment);
-            post.save();
             
             // if request is through ajax
             if(req.xhr){

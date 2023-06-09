@@ -43,8 +43,21 @@ function setUpCommentSection(post){
 
         function newCommentDOM(comment){
             return $(`
+                <!-- Comment Container -->
                 <li id="comment-${comment._id}" class="comment-container bg-[var(--complementary2)] p-2 rounded-xl text-white">
+
+                    <!-- Delete button -->
                     <a class="comment-delete-button float-right" href="/comments/destroy/${comment._id}"> <i class="fa-solid fa-xmark"></i> </a>
+
+                    <!-- Like button for comment -->
+                    <div id="comment-like-container-${comment._id}" class="text-white float-right mr-2">
+                        <a id="comment-like-button-${comment._id}" href="/likes/toggle/?id=${comment._id}&type=Comment" data-likes="0" class="toggle-like-button">
+                            <span class="likes-count-container"> 0 </span>
+                            <i class="fa-solid fa-heart"></i>
+                        </a>
+                    </div>
+
+                    <!-- User's name and content -->
                     <div class="text-xs"> ${comment.user.name} </div>
                     <div> ${comment.content} </div>
                 </li>

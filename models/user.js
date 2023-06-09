@@ -33,7 +33,13 @@ const userSchema = mongoose.Schema({
     avatar: {
         type: String,
         required: true
-    }
+    },
+    friendships : [
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : 'Friendship'
+        }
+    ]
 }, {
     // this will keep record of the time when we create or update data in database
     timestamps: true

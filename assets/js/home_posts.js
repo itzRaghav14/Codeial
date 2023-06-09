@@ -61,6 +61,14 @@ function home_posts(){
                 <div id="post-content-${post._id}" class="text-white text-lg my-2">
                     ${post.content}
                 </div>
+
+                <!-- Like button for post -->
+                <div id="post-like-container-${post._id}" class="text-white">
+                    <a id="post-like-button-${post._id}" href="/likes/toggle/?id=${post._id}&type=Post" data-likes="0" class="toggle-like-button">
+                    <span class="likes-count-container"> 0 </span>
+                    <i class="fa-solid fa-heart"></i>
+                    </a>
+                </div>
             
                 <!-- Comment Section -->
                 <div id="post-comment-section-${post._id}">
@@ -84,7 +92,6 @@ function home_posts(){
             </li>
         `);
     }
-
     
     // method to delete a post from the DOM
     let deletePost = function(deleteLink){

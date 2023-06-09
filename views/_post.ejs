@@ -20,6 +20,18 @@
         <%= post.content %>
     </div>
 
+    <!-- Like button for post -->
+    <div id="post-like-container-<%= post._id %>" class="text-white">
+        <% if(locals.user) { %>
+            <a id="post-like-button-<%= post._id %>" href="/likes/toggle/?id=<%= post._id %>&type=Post" data-likes="<%= post.likes.length %>" class="toggle-like-button">
+                <span class="likes-count-container"><%= post.likes.length %></span>
+                <i class="fa-solid fa-heart"></i>
+            </a>
+        <% } else { %>
+            <span> <%= post.likes.length %> <i class="fa-solid fa-heart"></i> </span>
+        <% } %>
+    </div>
+
     <!-- Comment Section -->
     <div id="post-comment-section-<%= post._id %>">
         <h4 class="text-white text-lg">Comments</h4>

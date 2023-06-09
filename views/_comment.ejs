@@ -1,7 +1,24 @@
+<!-- Comment Container -->
 <li id="comment-<%= comment._id %>" class="comment-container bg-[var(--complementary2)] p-2 rounded-xl text-white">
+
+    <!-- Delete button -->
     <% if(locals.user && (user.id == comment.user.id || user.id == post.user.id)) { %>
         <a class="comment-delete-button float-right" href="/comments/destroy/<%= comment.id %>"> <i class="fa-solid fa-xmark"></i> </a>
     <% } %>
+
+    <!-- Like button for comment -->
+    <div id="comment-like-container-<%= comment._id %>" class="text-white float-right mr-2">
+        <% if(locals.user) { %>
+            <a id="comment-like-button-<%= comment._id %>" href="/likes/toggle/?id=<%= comment._id %>&type=Comment" data-likes="<%= comment.likes.length %>" class="toggle-like-button">
+                <span class="likes-count-container"><%= comment.likes.length %></span>
+                <i class="fa-solid fa-heart"></i>
+            </a>
+        <% } else { %>
+            <span> <%= comment.likes.length %> <i class="fa-solid fa-heart"></i> </span>
+        <% } %>
+    </div>
+
+    <!-- User's name and content -->
     <div class="text-xs"> <%= comment.user.name %> </div>
     <div> <%= comment.content %> </div>
 </li>

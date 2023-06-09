@@ -1,6 +1,7 @@
 const { comment } = require('postcss');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const Like = require('../models/like');
 const commentsMailer = require('../mailers/comments_mailer');
 const queue = require('../config/kue');
 const commentEmailWorker = require('../workers/comment_email_worker');
@@ -90,7 +91,9 @@ module.exports.destroy = async function(req, res){
 
         // if the author of post or comment wants to delete the post
         if(req.user.id == comment_to_be_deleted.user || req.user.id == post.user){
-    
+
+            await Like.deleteMany({likeable : comment_to_be_deleted._id, onModel : 'Comment'});
+
             // remove the comment
             comment_to_be_deleted.remove();
     
